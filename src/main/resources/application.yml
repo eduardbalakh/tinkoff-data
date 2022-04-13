@@ -1,0 +1,14 @@
+server:
+  port: 8080
+
+
+tinkoff-investment:
+  token: ${TINKOFF_TOKEN}
+  sandboxMode: true
+
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/tinkoff-stocks
+    username: postgres
+    password: docker

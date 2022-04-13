@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "tinkoff-investment.sandboxMode",
+      "type": "java.lang.String",
+      "description": "Sandbox mode."
+    }
+  ] }
