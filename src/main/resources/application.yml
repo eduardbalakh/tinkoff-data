@@ -9,6 +9,18 @@ tinkoff-investment:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/tinkoff-stocks
+    url: jdbc:postgresql://localhost:5432/tinkoff_stocks
     username: postgres
     password: docker
+  jpa:
+    #hibernate:
+     # ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        default_schema: tinkoff_stocks
+        jdbc.lob.non_contextual_creation: true
+  flyway:
+    schemas: tinkoff_stocks
+    locations: classpath:/db/migration/postgres
+    enabled: true
