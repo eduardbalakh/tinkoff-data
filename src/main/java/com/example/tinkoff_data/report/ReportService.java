@@ -4,8 +4,8 @@ import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 
 public interface ReportService {
 
-    void generateAllReports();
+    void generateAllReports() throws Exception;
 
-    void generateReport(InstrumentType instrumentType);
+    void generateReport(InstrumentType instrumentType) throws Exception;
 
 }

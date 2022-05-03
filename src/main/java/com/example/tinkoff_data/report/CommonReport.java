@@ -1,6 +1,6 @@
 package com.example.tinkoff_data.report;
 
-import com.example.tinkoff_data.exception.CreateReportDirectoryFailed;
+import com.example.tinkoff_data.exception.CreateReportDirectoryFailedException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
@@ -114,7 +114,7 @@ public class CommonReport<T> {
         }
         catch (IOException e) {
             log.error("Cannot create directory for path {}", directoryPath);
-            throw new CreateReportDirectoryFailed("Cannot create directory for path: " + directoryPath , e);
+            throw new CreateReportDirectoryFailedException("Cannot create directory for path: " + directoryPath , e);
         }
     }
 

@@ -1,8 +1,13 @@
 package com.example.tinkoff_data.config;
 
 import lombok.Data;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import static org.modelmapper.config.Configuration.AccessLevel.PRIVATE;
 
 @Data
 @Configuration
@@ -37,6 +42,17 @@ public class GeneralTinkoffProfileConfig {
     @Override
     public final String toString() {
         return String.format("core.Parameters: sandBoxMode = %s", sandboxMode ? "true" : "false");
+    }
+
+    @Bean
+    public ModelMapper modelMapper() {
+        ModelMapper modelMapper = new ModelMapper();
+        modelMapper.getConfiguration()
+                .setMatchingStrategy(MatchingStrategies.STRICT)
+                .setFieldMatchingEnabled(true)
+                .setSkipNullEnabled(true)
+                .setFieldAccessLevel(PRIVATE);
+        return modelMapper;
     }
 
 }

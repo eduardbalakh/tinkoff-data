@@ -1,6 +1,6 @@
 package com.example.tinkoff_data.report;
 
-import com.example.tinkoff_data.dataprovider.ContextProvider;
+import com.example.tinkoff_data.dataprovider.v1.TcsContextProviderService;
 import com.example.tinkoff_data.report.reporttypes.AllBondsReport;
 import com.example.tinkoff_data.report.reporttypes.AllCurrenciesReport;
 import com.example.tinkoff_data.report.reporttypes.AllEtfsReport;
@@ -18,10 +18,10 @@ import java.util.List;
 @Slf4j
 public class CSVReportService implements ReportService {
 
-    private final ContextProvider contextProvider;
+    private final TcsContextProviderService contextProvider;
 
     @Override
-    public void generateAllReports() {
+    public void generateAllReports() throws Exception {
         List<CommonReport> reports = List.of(
                 getReportType(InstrumentType.BOND),
                 getReportType(InstrumentType.CURRENCY),
@@ -31,21 +31,21 @@ public class CSVReportService implements ReportService {
     }
 
     @Override
-    public void generateReport(InstrumentType instrumentType) {
+    public void generateReport(InstrumentType instrumentType) throws Exception {
         CommonReport report = getReportType(instrumentType);
         report.doExport();
     }
 
-    private CommonReport getReportType(InstrumentType instrumentType) {
+    private CommonReport getReportType(InstrumentType instrumentType) throws Exception {
         switch (instrumentType){
             case BOND:
-                return new AllBondsReport(contextProvider.getBonds().getInstruments());
+                return new AllBondsReport(contextProvider.getBonds());
             case CURRENCY:
-                return new AllCurrenciesReport(contextProvider.getCurrencies().getInstruments());
+                return new AllCurrenciesReport(contextProvider.getCurrencies());
             case STOCK:
-                return new AllStocksReport(contextProvider.getStocks().getInstruments());
+                return new AllStocksReport(contextProvider.getStocks());
             case ETF:
-                return new AllEtfsReport(contextProvider.getEtfs().getInstruments());
+                return new AllEtfsReport(contextProvider.getEtfs());
             default:
                 log.error("Unsupported Instrument Type enum value");
                 throw new IllegalArgumentException("Unsupported Instrument Type enum value");
