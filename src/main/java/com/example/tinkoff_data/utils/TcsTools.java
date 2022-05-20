@@ -1,8 +1,10 @@
 package com.example.tinkoff_data.utils;
 
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import com.example.tinkoff_data.model.TimeInterval;
+import ru.tinkoff.piapi.contract.v1.Quotation;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -35,6 +37,12 @@ public class TcsTools {
                 chronoSize = 1;
         }
         return DateTimeTools.splitInterval(chronoUnit, chronoSize, begPeriod, endPeriod);
+    }
+
+    public static BigDecimal convertQuatationToBigDecimal(Quotation quotation) {
+        return quotation.getUnits() == 0 && quotation.getNano() == 0 ?
+                BigDecimal.ZERO :
+                BigDecimal.valueOf(quotation.getUnits()).add(BigDecimal.valueOf(quotation.getNano(), 9));
     }
 
 }

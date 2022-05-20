@@ -1,6 +1,6 @@
 package com.example.tinkoff_data.datastorage.service;
 
-import com.example.tinkoff_data.datastorage.entity.Instrument;
+import com.example.tinkoff_data.datastorage.entity.v1.Instrument;
 
 import java.util.List;
 

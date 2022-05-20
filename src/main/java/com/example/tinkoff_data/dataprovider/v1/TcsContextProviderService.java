@@ -1,8 +1,7 @@
 package com.example.tinkoff_data.dataprovider.v1;
 
-import com.example.tinkoff_data.dataprovider.v1.TcsContextProvider;
-import com.example.tinkoff_data.datastorage.entity.Instrument;
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.datastorage.entity.v1.Instrument;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import com.example.tinkoff_data.model.TimeInterval;
 import com.example.tinkoff_data.utils.DateTimeTools;
 import com.example.tinkoff_data.utils.TcsTools;
@@ -26,7 +25,7 @@ public class TcsContextProviderService {
     private final static int MAX_RETRIES = 5;
     private final static int PAUSE_LENGTH = 1000;
 
-    private final TcsContextProvider tcsContextProvider;
+    private final TcsContextProviderV1 tcsContextProvider;
 
     public List<MarketInstrument> getBonds() throws Exception {
         return tcsContextProvider.getBonds().getInstruments();

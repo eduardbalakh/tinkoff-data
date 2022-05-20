@@ -1,8 +1,8 @@
 package com.example.tinkoff_data.datastorage.service;
 
-import com.example.tinkoff_data.datastorage.entity.Candlestick;
-import com.example.tinkoff_data.datastorage.entity.Instrument;
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.datastorage.entity.v1.Candlestick;
+import com.example.tinkoff_data.datastorage.entity.v1.Instrument;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import com.example.tinkoff_data.datastorage.repository.CandlestickRepository;
 import com.example.tinkoff_data.utils.DateTimeTools;
 import lombok.AllArgsConstructor;

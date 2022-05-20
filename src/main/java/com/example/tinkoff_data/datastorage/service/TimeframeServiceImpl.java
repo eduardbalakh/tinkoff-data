@@ -1,6 +1,6 @@
 package com.example.tinkoff_data.datastorage.service;
 
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import com.example.tinkoff_data.datastorage.repository.TimeframeRepository;
 import com.example.tinkoff_data.exception.EntityNotFoundException;
 import lombok.AllArgsConstructor;

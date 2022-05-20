@@ -1,11 +1,12 @@
 package com.example.tinkoff_data.mapper;
 
-import com.example.tinkoff_data.datastorage.entity.Candlestick;
-import com.example.tinkoff_data.datastorage.entity.Instrument;
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.datastorage.entity.v1.Candlestick;
+import com.example.tinkoff_data.datastorage.entity.v1.Instrument;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import com.example.tinkoff_data.datastorage.service.InstrumentService;
 import com.example.tinkoff_data.datastorage.service.InstrumentTypeService;
 import com.example.tinkoff_data.datastorage.service.TimeframeService;
+import com.example.tinkoff_data.utils.TcsTools;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.Converter;
@@ -14,7 +15,11 @@ import org.modelmapper.spi.MappingContext;
 import org.springframework.stereotype.Component;
 import ru.tinkoff.invest.openapi.model.rest.Candle;
 import ru.tinkoff.invest.openapi.model.rest.CandleResolution;
+import ru.tinkoff.invest.openapi.model.rest.Currency;
+import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 import ru.tinkoff.invest.openapi.model.rest.MarketInstrument;
+import ru.tinkoff.piapi.contract.v1.Bond;
+import ru.tinkoff.piapi.contract.v1.Etf;
 
 import javax.annotation.PostConstruct;
 
@@ -125,21 +130,74 @@ public class CandleMapper {
             }
         });
 
-        modelMapper.createTypeMap(MarketInstrument.class, Instrument.class).setConverter(new Converter<MarketInstrument, Instrument>() {
-            @Override
-            public Instrument convert(MappingContext<MarketInstrument, Instrument> mappingContext) {
-                Instrument instrument = new Instrument();
-                MarketInstrument marketInstrument = mappingContext.getSource();
-                instrument.setCurrency(marketInstrument.getCurrency().getValue());
-                instrument.setTicker(marketInstrument.getTicker());
-                instrument.setFigi(marketInstrument.getFigi());
-                instrument.setIsin(marketInstrument.getIsin());
-                instrument.setName(marketInstrument.getName());
-                instrument.setLot(marketInstrument.getLot());
-                instrument.setIncrement(marketInstrument.getMinPriceIncrement());
-                instrument.setInstrumentType(instrumentTypeService.getByCode(marketInstrument.getType().toString()));
-                return instrument;
-            }
+        modelMapper.createTypeMap(MarketInstrument.class, Instrument.class).setConverter(mappingContext -> {
+            Instrument instrument = new Instrument();
+            MarketInstrument marketInstrument = mappingContext.getSource();
+            instrument.setCurrency(marketInstrument.getCurrency().getValue());
+            instrument.setTicker(marketInstrument.getTicker());
+            instrument.setFigi(marketInstrument.getFigi());
+            instrument.setIsin(marketInstrument.getIsin());
+            instrument.setName(marketInstrument.getName());
+            instrument.setLot(marketInstrument.getLot());
+            instrument.setIncrement(marketInstrument.getMinPriceIncrement());
+            instrument.setInstrumentType(instrumentTypeService.getByCode(marketInstrument.getType().toString()));
+            return instrument;
         });
+
+        modelMapper.createTypeMap(Bond.class, MarketInstrument.class)
+                .setConverter(initBondsMapperGrpc());
+        modelMapper.createTypeMap(Etf.class, MarketInstrument.class)
+                .setConverter(initEtfsMapperGrpc());
+        modelMapper.createTypeMap(ru.tinkoff.piapi.contract.v1.Currency.class , MarketInstrument.class)
+                .setConverter(initCurrencyMapperGrpc());
     }
+
+    private Converter<Bond, MarketInstrument> initBondsMapperGrpc() {
+        return mappingContext -> {
+            Bond bond = mappingContext.getSource();
+            MarketInstrument mi = new MarketInstrument();
+            mi.setFigi(bond.getFigi());
+            mi.setTicker(bond.getTicker());
+            mi.setIsin(bond.getIsin());
+            mi.setMinPriceIncrement(TcsTools.convertQuatationToBigDecimal(bond.getMinPriceIncrement()));
+            mi.setLot(bond.getLot());
+            mi.setCurrency(Enum.valueOf(Currency.class, bond.getCurrency()));
+            mi.setName(bond.getName());
+            mi.setType(InstrumentType.BOND);
+            return mi;
+        };
+    }
+
+    private Converter<Etf, MarketInstrument> initEtfsMapperGrpc() {
+        return mappingContext -> {
+            Etf etf = mappingContext.getSource();
+            MarketInstrument mi = new MarketInstrument();
+            mi.setFigi(etf.getFigi());
+            mi.setTicker(etf.getTicker());
+            mi.setIsin(etf.getIsin());
+            mi.setMinPriceIncrement(TcsTools.convertQuatationToBigDecimal(etf.getMinPriceIncrement()));
+            mi.setLot(etf.getLot());
+            mi.setCurrency(Enum.valueOf(Currency.class, etf.getCurrency()));
+            mi.setName(etf.getName());
+            mi.setType(InstrumentType.ETF);
+            return mi;
+        };
+    }
+
+    private Converter<ru.tinkoff.piapi.contract.v1.Currency, MarketInstrument> initCurrencyMapperGrpc() {
+        return mappingContext -> {
+            ru.tinkoff.piapi.contract.v1.Currency currency = mappingContext.getSource();
+            MarketInstrument mi = new MarketInstrument();
+            mi.setFigi(currency.getFigi());
+            mi.setTicker(currency.getTicker());
+            mi.setIsin(currency.getIsin());
+            mi.setMinPriceIncrement(TcsTools.convertQuatationToBigDecimal(currency.getMinPriceIncrement()));
+            mi.setLot(currency.getLot());
+            mi.setCurrency(Enum.valueOf(Currency.class, currency.getCurrency()));
+            mi.setName(currency.getName());
+            mi.setType(InstrumentType.ETF);
+            return mi;
+        };
+    }
+
 }

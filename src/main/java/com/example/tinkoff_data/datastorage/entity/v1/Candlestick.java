@@ -1,4 +1,4 @@
-package com.example.tinkoff_data.datastorage.entity;
+package com.example.tinkoff_data.datastorage.entity.v1;
 
 import com.example.tinkoff_data.utils.DateTimeTools;
 import lombok.AccessLevel;
@@ -15,7 +15,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 
 @Entity
 @Data

@@ -1,8 +1,9 @@
 package com.example.tinkoff_data.dataprovider.v1;
 
 import com.example.tinkoff_data.config.ApiConnector;
-import com.example.tinkoff_data.datastorage.entity.Instrument;
-import com.example.tinkoff_data.datastorage.entity.Timeframe;
+import com.example.tinkoff_data.dataprovider.TcsContextProvider;
+import com.example.tinkoff_data.datastorage.entity.v1.Instrument;
+import com.example.tinkoff_data.datastorage.entity.v1.Timeframe;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -18,30 +19,29 @@ import java.util.Optional;
 @Slf4j
 @Component
 @AllArgsConstructor
-public class TcsContextProvider {
+public class TcsContextProviderV1 implements TcsContextProvider {
 
     private final ApiConnector tcsApiConnector;
     private final ModelMapper modelMapper;
 
-    public MarketInstrumentList getStocks() throws Exception {
+    public MarketInstrumentList getStocks() {
         return getOpenApi().getMarketContext().getMarketStocks().join();
     }
 
-    public MarketInstrumentList getBonds() throws Exception {
+    public MarketInstrumentList getBonds() {
         return getOpenApi().getMarketContext().getMarketBonds().join();
     }
 
-    public MarketInstrumentList getEtfs() throws Exception {
+    public MarketInstrumentList getEtfs() {
         return getOpenApi().getMarketContext().getMarketEtfs().join();
     }
 
-    public MarketInstrumentList getCurrencies() throws Exception {
+    public MarketInstrumentList getCurrencies() {
         return getOpenApi().getMarketContext().getMarketCurrencies().join();
     }
 
     public Optional<Candles> getCandles(
-            Instrument instrument, Timeframe timeframe, ZonedDateTime begPeriod, ZonedDateTime endPeriod)
-            throws Exception {
+            Instrument instrument, Timeframe timeframe, ZonedDateTime begPeriod, ZonedDateTime endPeriod) {
         return getOpenApi().getMarketContext().getMarketCandles(
                 instrument.getFigi(),
                 begPeriod.toOffsetDateTime(),

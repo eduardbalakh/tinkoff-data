@@ -1,4 +1,4 @@
-package com.example.tinkoff_data.datastorage.entity;
+package com.example.tinkoff_data.datastorage.entity.v1;
 
 import lombok.AccessLevel;
 import lombok.Data;
