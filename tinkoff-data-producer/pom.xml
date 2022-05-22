@@ -3,9 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.6</version>
+        <groupId>com.example.stocksservice</groupId>
+        <artifactId>stocks-service</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
@@ -44,27 +44,22 @@
         <dependency>
             <groupId>ru.tinkoff.invest</groupId>
             <artifactId>openapi-java-sdk-core</artifactId>
-            <version>0.5.2</version>
         </dependency>
         <dependency>
             <groupId>ru.tinkoff.invest</groupId>
             <artifactId>openapi-java-sdk-java8</artifactId>
-            <version>0.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>
-            <version>4.10.0-RC1</version>
         </dependency>
         <dependency>
             <groupId>org.flywaydb</groupId>
             <artifactId>flyway-core</artifactId>
-            <version>8.5.7</version>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>3.1.0</version>
         </dependency>
 
         <!--<dependency>
@@ -85,7 +80,6 @@
         <dependency>
             <groupId>net.devh</groupId>
             <artifactId>grpc-client-spring-boot-starter</artifactId>
-            <version>2.13.1.RELEASE</version>
         </dependency>
 
     </dependencies>
