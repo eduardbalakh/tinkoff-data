@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: tinkoff-data-producer
+  profiles:
+    active: tinkoff_data_producer
+  cloud:
+    config:
+      name: tinkoff-data-producer,config-client
+      uri: http://localhost:8089

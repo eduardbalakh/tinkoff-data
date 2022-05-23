@@ -1,0 +1,18 @@
+server:
+  port: 8089
+
+spring:
+  application:
+    name: configserver
+  cloud:
+    config:
+      server:
+        git:
+          uri: file://Users/eduardbalakh/IdeaProjects/Tinkoff_data/config-server-repository
+          clone-on-start: true
+      fail-fast: true
+
+logging:
+  level:
+    ROOT: INFO
+    org.spring.framework.cloud.config: DEBUG
