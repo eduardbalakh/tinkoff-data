@@ -1,7 +1,5 @@
 package com.example.stocksservice.tinkoff_data;
 
-import com.example.stocksservice.tinkoff_data.config.ApiConnector;
-import com.example.stocksservice.tinkoff_data.config.GeneralTinkoffProfileConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -12,5 +10,7 @@ public class TinkoffDataApplication {
 
         SpringApplication.run(TinkoffDataApplication.class, args);
     }
+
+
 
 }
