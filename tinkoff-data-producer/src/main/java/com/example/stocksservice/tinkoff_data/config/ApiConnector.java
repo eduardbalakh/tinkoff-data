@@ -1,6 +1,5 @@
 package com.example.stocksservice.tinkoff_data.config;
 
-import com.example.stocksservice.tinkoff_data.config.GeneralTinkoffProfileConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.OpenApi;

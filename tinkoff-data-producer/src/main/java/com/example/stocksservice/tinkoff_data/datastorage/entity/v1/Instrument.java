@@ -1,6 +1,5 @@
 package com.example.stocksservice.tinkoff_data.datastorage.entity.v1;
 
-import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.InstrumentType;
 import lombok.AccessLevel;
 import lombok.Data;
 import lombok.Setter;

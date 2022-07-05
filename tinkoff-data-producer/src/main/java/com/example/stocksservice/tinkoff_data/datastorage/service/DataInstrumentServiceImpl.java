@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class InstrumentServiceImpl implements InstrumentService {
+public class DataInstrumentServiceImpl implements InstrumentService {
 
     private InstrumentRepository instrumentRepository;
 
@@ -38,8 +38,8 @@ public class InstrumentServiceImpl implements InstrumentService {
     }
 
     @Override
-    public Instrument getByFigi(String isin) {
-        return instrumentRepository.findByFigiIgnoreCase(isin);
+    public Instrument getByFigi(String figi) {
+        return instrumentRepository.findByFigiIgnoreCase(figi);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.example.stocksservice.tinkoff_data.dataprovider.v2;
 
+import com.example.stocksservice.tinkoff_data.dataprovider.ITinkoffApi;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class TcsContextProviderV2_1 {
+public class TcsContextProviderV2_1 implements ITinkoffApi {
 
     private InvestApi investApi;
 
