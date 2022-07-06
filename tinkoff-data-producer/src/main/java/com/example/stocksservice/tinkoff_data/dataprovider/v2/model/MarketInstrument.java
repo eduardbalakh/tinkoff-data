@@ -2,10 +2,11 @@ package com.example.stocksservice.tinkoff_data.dataprovider.v2.model;
 
 import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class MarketInstrument {
+public class MarketInstrument implements Serializable {
 
     private String figi = null;
 

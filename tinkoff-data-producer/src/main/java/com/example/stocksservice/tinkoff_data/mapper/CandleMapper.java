@@ -1,20 +1,19 @@
 package com.example.stocksservice.tinkoff_data.mapper;
 
 import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
-import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Candlestick;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Instrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Timeframe;
-import com.example.stocksservice.tinkoff_data.datastorage.service.InstrumentService;
 import com.example.stocksservice.tinkoff_data.datastorage.service.InstrumentTypeService;
 import com.example.stocksservice.tinkoff_data.datastorage.service.TimeframeService;
+import com.example.stocksservice.tinkoff_data.service.InstrumentService;
 import com.example.stocksservice.tinkoff_data.utils.TcsTools;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.spi.MappingContext;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import ru.tinkoff.invest.openapi.model.rest.Candle;
 import ru.tinkoff.invest.openapi.model.rest.CandleResolution;
 import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 import ru.tinkoff.piapi.contract.v1.Bond;
@@ -27,11 +26,12 @@ import javax.annotation.PostConstruct;
 @Component
 @Data
 @AllArgsConstructor
+@Order(1)
 public class CandleMapper {
 
     private final ModelMapper modelMapper;
     private final InstrumentTypeService instrumentTypeService;
-    //private final InstrumentService instrumentService;
+    private final InstrumentService instrumentService;
     private final TimeframeService timeFrameService;
 
     @PostConstruct

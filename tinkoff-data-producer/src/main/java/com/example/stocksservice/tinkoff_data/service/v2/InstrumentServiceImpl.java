@@ -2,7 +2,6 @@ package com.example.stocksservice.tinkoff_data.service.v2;
 
 import com.example.stocksservice.tinkoff_data.dataprovider.ITinkoffApi;
 import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
-import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Instrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.InstrumentType;
 import com.example.stocksservice.tinkoff_data.datastorage.service.InstrumentTypeServiceImpl;
 import com.example.stocksservice.tinkoff_data.service.InstrumentService;
@@ -10,8 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.piapi.contract.v1.*;
 import ru.tinkoff.piapi.core.InstrumentsService;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
+@Order(87658675)
 public class InstrumentServiceImpl implements InstrumentService {
 
     private final ITinkoffApi tinkoffApi;
@@ -31,7 +31,7 @@ public class InstrumentServiceImpl implements InstrumentService {
     private final InstrumentTypeServiceImpl instrumentTypeService;
     private final Map<String, MarketInstrument> instrumentByFigi = new ConcurrentHashMap<>();
 
-    @PostConstruct
+    //@PostConstruct
     public void init() throws Exception {
         getInstruments();
     }
@@ -69,6 +69,7 @@ public class InstrumentServiceImpl implements InstrumentService {
                         }).collect(Collectors.toList());
                 break;
             case ("currency"):
+
                 marketInstruments = instrumentsService.getAllCurrenciesSync().stream()
                         .map(curr -> {
                             MarketInstrument currMI = modelMapper.map(curr, MarketInstrument.class);

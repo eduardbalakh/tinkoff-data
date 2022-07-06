@@ -1,14 +1,15 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
+import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Candlestick;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Instrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.InstrumentType;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Timeframe;
+import com.example.stocksservice.tinkoff_data.service.InstrumentService;
 import com.example.stocksservice.tinkoff_data.service.v1.ContextServiceImpl;
 import com.example.stocksservice.tinkoff_data.utils.DateTimeTools;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.time.ZonedDateTime;
@@ -19,18 +20,20 @@ import java.util.List;
 @Slf4j
 public class MarketInstrumentServiceImpl implements MarketInstrumentService {
 
-    private InstrumentService dataInstrumentServiceImpl;
-    private InstrumentService cacheInstrumentServiceImpl;
+    private StorageInstrumentService dataInstrumentServiceImpl;
+    private StorageInstrumentService cacheInstrumentServiceImpl;
     private ContextServiceImpl contextService;
     private InstrumentTypeService instrumentTypeService;
     private CandlestickService candlestickService;
+    private InstrumentService instrumentService;
 
 
     @Override
     public void updateInstruments() throws Exception {
         log.info("Updating instruments");
-        List<Instrument> instruments = contextService.getInstruments();
+        List<MarketInstrument> instruments = instrumentService.getInstruments();
         dataInstrumentServiceImpl.saveAllIfNotExists(instruments);
+        cacheInstrumentServiceImpl.saveAllIfNotExists(instruments);
         log.info(String.format("Updating instruments: Records processed: %d", instruments.size()));
     }
 
@@ -45,8 +48,9 @@ public class MarketInstrumentServiceImpl implements MarketInstrumentService {
     @Override
     public void updateInstruments(InstrumentType instrumentType) throws Exception {
         log.info(String.format("Updating instruments of type: %s", instrumentType.getCode()));
-        List<Instrument> instruments = contextService.getInstruments(instrumentType);
+        List<MarketInstrument> instruments = instrumentService.getInstruments(instrumentType);
         dataInstrumentServiceImpl.saveAllIfNotExists(instruments);
+        cacheInstrumentServiceImpl.saveAllIfNotExists(instruments);
         log.info(String.format("Updating instruments: Records processed: %d", instruments.size()));
     }
 
@@ -55,6 +59,7 @@ public class MarketInstrumentServiceImpl implements MarketInstrumentService {
         candlestickService.getCandlesticks(instrument, timeframe);
     }
 
+    //todo: refine candlesticks
     @Override
     public void updateCandlesticks(Instrument instrument, Timeframe timeframe, ZonedDateTime begInterval, ZonedDateTime endInterval) {
         log.info(String.format("Updating candlesticks : %s [%s] %s - %s",
@@ -66,6 +71,4 @@ public class MarketInstrumentServiceImpl implements MarketInstrumentService {
         candlesticks.forEach(candlestickService::saveAllIfNotExists);
         log.info(String.format("Updating candlesticks: Records processed: %d", candlesticks.size()));
     }
-
-
 }
