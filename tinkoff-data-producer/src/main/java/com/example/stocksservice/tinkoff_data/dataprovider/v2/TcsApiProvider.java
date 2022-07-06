@@ -14,7 +14,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class TcsContextProviderV2_1 implements ITinkoffApi {
+public class TcsApiProvider implements ITinkoffApi {
 
     private InvestApi investApi;
 

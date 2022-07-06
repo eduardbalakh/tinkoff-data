@@ -1,13 +1,12 @@
 package com.example.stocksservice.tinkoff_data.controller;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.TcsContextProviderV2_1;
+import com.example.stocksservice.tinkoff_data.dataprovider.v2.TcsApiProvider;
 import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.datastorage.service.CacheInstrumentServiceImpl;
 import com.example.stocksservice.tinkoff_data.datastorage.service.MarketInstrumentService;
 import com.example.stocksservice.tinkoff_data.report.ReportService;
 import com.google.protobuf.AbstractMessage;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,7 +28,7 @@ public class TriggerController {
 
     private final MarketInstrumentService marketInstrumentService;
 
-    private final TcsContextProviderV2_1 contextProviderV2_1;
+    private final TcsApiProvider contextProviderV2_1;
 
     private CacheInstrumentServiceImpl cacheInstrumentService;
 
