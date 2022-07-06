@@ -26,27 +26,4 @@ public interface MarketInstrumentService {
      * @param instrumentType - тип инструмента
      */
     void updateInstruments(InstrumentType instrumentType) throws Exception;
-
-    /**
-     * обновляет исторические данные по инструменту
-     * период - с начала GlobalContext.BEG_DATE - по настоещее время
-     *
-     * @param instrument - инструмент
-     * @param timeframe  - таймфрейм
-     */
-    void updateCandlesticks(Instrument instrument, Timeframe timeframe);
-
-    /**
-     * обновляет исторические данные по инструменту
-     * период - с начала GlobalContext.BEG_DATE - по настоещее время
-     *
-     * @param instrument  - инструмент
-     * @param timeframe   - таймфрейм
-     * @param begInterval - начало периода
-     * @param endInterval - окончание периода
-     */
-    void updateCandlesticks(
-            Instrument instrument, Timeframe timeframe, ZonedDateTime begInterval, ZonedDateTime endInterval);
-
-
 }

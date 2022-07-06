@@ -6,6 +6,9 @@ import com.example.stocksservice.tinkoff_data.utils.DateTimeTools;
 import ru.tinkoff.piapi.contract.v1.Quotation;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
@@ -44,6 +47,10 @@ public class TcsTools {
         return quotation.getUnits() == 0 && quotation.getNano() == 0 ?
                 BigDecimal.ZERO :
                 BigDecimal.valueOf(quotation.getUnits()).add(BigDecimal.valueOf(quotation.getNano(), 9));
+    }
+
+    public static OffsetDateTime toOffsetDateTime(long seconds) {
+        return Instant.ofEpochSecond(seconds).atOffset(ZoneOffset.UTC);
     }
 
 }
