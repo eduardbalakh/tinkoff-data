@@ -1,16 +1,18 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.InstrumentType;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.service.InstrumentService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @AllArgsConstructor
+@DependsOn({"tcsApiProvider"})
 @Slf4j
 public class MarketInstrumentServiceImpl implements MarketInstrumentService {
 

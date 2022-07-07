@@ -1,6 +1,9 @@
 package com.example.stocksservice.tinkoff_data.config;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
+
+import com.example.stocksservice.tinkoff_data.model.CandleData;
+import com.example.stocksservice.tinkoff_data.model.CandleSlice;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import lombok.Data;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +20,22 @@ public class ConnectionConfig {
         template.setConnectionFactory(connectionFactory);
 
         return  template;
+    }
+
+    @Bean
+    public RedisTemplate<String, CandleSlice> candleSliceRedisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, CandleSlice> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+
+        return template;
+    }
+
+    @Bean
+    public RedisTemplate<String, CandleData> candleDataRedisTemplate(RedisConnectionFactory connectionFactory) {
+        RedisTemplate<String, CandleData> template = new RedisTemplate<>();
+        template.setConnectionFactory(connectionFactory);
+
+        return template;
     }
 
 

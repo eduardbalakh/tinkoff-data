@@ -1,20 +1,20 @@
-package com.example.stocksservice.tinkoff_data.datastorage.service;
+package com.example.stocksservice.tinkoff_data.service;
 
 import com.example.stocksservice.tinkoff_data.dataprovider.ITinkoffApi;
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.CandleData;
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
+import com.example.stocksservice.tinkoff_data.datastorage.service.CacheInstrumentServiceImpl;
+import com.example.stocksservice.tinkoff_data.model.CandleData;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
-import ru.tinkoff.piapi.contract.v1.HistoricCandle;
 import ru.tinkoff.piapi.contract.v1.MarketDataResponse;
 import ru.tinkoff.piapi.core.stream.StreamProcessor;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -28,6 +28,7 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
 
     private ITinkoffApi tinkoffApi;
     private CacheInstrumentServiceImpl cacheInstrumentService;
+    private CandlePublisherService candlePublisherService;
 
     @PostConstruct
     public void init() {
@@ -37,12 +38,13 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
 
     @Override
     public void publishCandleData() {
+        log.info("Starting publishing candle data.....");
         List<String> figis = cacheInstrumentService.getAll().stream()
                 .filter(marketInstrument -> marketInstrument.getType().equals(InstrumentType.CURRENCY))
                 .map(MarketInstrument::getFigi)
                 //.limit(2)
                 .collect(Collectors.toList());
-        log.info("Starting publishing candle data.....");
+
         try {
             tinkoffApi.getApi().getMarketDataStreamService()
                     .newStream("candles_stream", getStreamProcessor(), onErrorConsumer())
@@ -54,12 +56,18 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
         }
     }
 
+    @PreDestroy
+    public void unsubscribeStream() {
+
+    }
+
     private StreamProcessor<MarketDataResponse> getStreamProcessor() {
 
         return item -> {
             log.trace("New data in streaming api: {}", item);
             if (item.hasCandle()) {
                 CandleData cd = new CandleData(item);
+                candlePublisherService.refreshCandle(cd);
                 log.info("candle : {}", cd);
             }
         };

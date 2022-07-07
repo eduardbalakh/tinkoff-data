@@ -1,4 +1,4 @@
-package com.example.stocksservice.tinkoff_data.dataprovider.v2.model;
+package com.example.stocksservice.tinkoff_data.model;
 
 import com.example.stocksservice.tinkoff_data.utils.TcsTools;
 import lombok.Getter;
@@ -6,13 +6,14 @@ import lombok.Setter;
 import ru.tinkoff.piapi.contract.v1.HistoricCandle;
 import ru.tinkoff.piapi.contract.v1.MarketDataResponse;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
 
 @Getter
 @Setter
-public class CandleData {
+public class CandleData implements Serializable {
     private String figi;
     private BigDecimal highPrice;
     private BigDecimal lowPrice;

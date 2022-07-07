@@ -1,14 +1,14 @@
-package com.example.stocksservice.tinkoff_data.dataprovider.v2.model;
+package com.example.stocksservice.tinkoff_data.model;
 
-import lombok.Getter;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Setter
-public class CandleSlice {
+public class CandleSlice implements Serializable {
     private OffsetDateTime sliceTime;
     private String interval;
     private List<CandleData> candles;

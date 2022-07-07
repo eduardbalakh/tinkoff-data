@@ -1,19 +1,17 @@
-package com.example.stocksservice.tinkoff_data.service.v2;
+package com.example.stocksservice.tinkoff_data.service;
 
 import com.example.stocksservice.tinkoff_data.dataprovider.ITinkoffApi;
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.InstrumentType;
 import com.example.stocksservice.tinkoff_data.datastorage.service.InstrumentTypeServiceImpl;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.service.InstrumentService;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 import ru.tinkoff.piapi.core.InstrumentsService;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +21,6 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @Slf4j
-@Order(87658675)
 public class InstrumentServiceImpl implements InstrumentService {
 
     private final ITinkoffApi tinkoffApi;

@@ -1,9 +1,9 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
 import com.example.stocksservice.tinkoff_data.datastorage.entity.v1.Instrument;
 import com.example.stocksservice.tinkoff_data.datastorage.repository.InstrumentRepository;
 import com.example.stocksservice.tinkoff_data.exception.EntityNotFoundException;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;

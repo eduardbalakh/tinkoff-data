@@ -1,6 +1,7 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
+
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 
 import java.util.List;
 

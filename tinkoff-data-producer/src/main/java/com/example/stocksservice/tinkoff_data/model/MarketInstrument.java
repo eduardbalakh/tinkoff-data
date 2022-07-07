@@ -1,4 +1,4 @@
-package com.example.stocksservice.tinkoff_data.dataprovider.v2.model;
+package com.example.stocksservice.tinkoff_data.model;
 
 import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 
@@ -158,23 +158,21 @@ public class MarketInstrument implements Serializable {
     }
 
     public int hashCode() {
-        return Objects.hash(new Object[]{this.figi, this.ticker, this.isin, this.minPriceIncrement, this.lot, this.minQuantity, this.currency, this.name, this.type});
+        return Objects.hash(this.figi, this.ticker, this.isin, this.minPriceIncrement, this.lot, this.minQuantity, this.currency, this.name, this.type);
     }
 
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("class MarketInstrument {\n");
-        sb.append("    figi: ").append(this.toIndentedString(this.figi)).append("\n");
-        sb.append("    ticker: ").append(this.toIndentedString(this.ticker)).append("\n");
-        sb.append("    isin: ").append(this.toIndentedString(this.isin)).append("\n");
-        sb.append("    minPriceIncrement: ").append(this.toIndentedString(this.minPriceIncrement)).append("\n");
-        sb.append("    lot: ").append(this.toIndentedString(this.lot)).append("\n");
-        sb.append("    minQuantity: ").append(this.toIndentedString(this.minQuantity)).append("\n");
-        sb.append("    currency: ").append(this.toIndentedString(this.currency)).append("\n");
-        sb.append("    name: ").append(this.toIndentedString(this.name)).append("\n");
-        sb.append("    type: ").append(this.toIndentedString(this.type)).append("\n");
-        sb.append("}");
-        return sb.toString();
+        return "class MarketInstrument {\n" +
+                "    figi: " + this.toIndentedString(this.figi) + "\n" +
+                "    ticker: " + this.toIndentedString(this.ticker) + "\n" +
+                "    isin: " + this.toIndentedString(this.isin) + "\n" +
+                "    minPriceIncrement: " + this.toIndentedString(this.minPriceIncrement) + "\n" +
+                "    lot: " + this.toIndentedString(this.lot) + "\n" +
+                "    minQuantity: " + this.toIndentedString(this.minQuantity) + "\n" +
+                "    currency: " + this.toIndentedString(this.currency) + "\n" +
+                "    name: " + this.toIndentedString(this.name) + "\n" +
+                "    type: " + this.toIndentedString(this.type) + "\n" +
+                "}";
     }
 
     private String toIndentedString(Object o) {

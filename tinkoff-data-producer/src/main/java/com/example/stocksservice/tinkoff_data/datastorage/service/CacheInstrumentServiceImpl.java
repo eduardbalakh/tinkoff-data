@@ -1,6 +1,6 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
-import com.example.stocksservice.tinkoff_data.dataprovider.v2.model.MarketInstrument;
+import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -15,7 +15,7 @@ import java.util.stream.Stream;
 @Slf4j
 public class CacheInstrumentServiceImpl implements StorageInstrumentService {
 
-    private RedisTemplate<String, MarketInstrument> instrumentRedisTemplate;
+    private final RedisTemplate<String, MarketInstrument> instrumentRedisTemplate;
 
     public CacheInstrumentServiceImpl(RedisTemplate<String, MarketInstrument> instrumentRedisTemplate) {
         this.instrumentRedisTemplate = instrumentRedisTemplate;
