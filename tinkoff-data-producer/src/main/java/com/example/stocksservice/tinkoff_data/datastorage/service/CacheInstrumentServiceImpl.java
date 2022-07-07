@@ -1,5 +1,6 @@
 package com.example.stocksservice.tinkoff_data.datastorage.service;
 
+import com.example.stocksservice.tinkoff_data.exception.RedisConnectionException;
 import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,13 +28,17 @@ public class CacheInstrumentServiceImpl implements StorageInstrumentService {
     @PostConstruct
     public void init() {
         String pong = instrumentRedisTemplate.getConnectionFactory().getConnection().ping();
-        log.info("Redis connection: {}", pong);
+        if (!pong.equals("PONG")) {
+            log.info("Redis connection fail");
+            throw new RedisConnectionException("Cannot connect to Redis storage");
+        }
+        log.info("Redis connection successful");
     }
 
     @Override
     public List<MarketInstrument> getAll() {
         Long size = instrumentRedisTemplate.opsForList().size(tinkoffInstrumentsTopic);
-        if(size == null) {
+        if (size == null) {
             throw new IllegalStateException("Redis key does not exists for instruments");
         }
         return instrumentRedisTemplate.opsForList().range(tinkoffInstrumentsTopic, 0, size);
