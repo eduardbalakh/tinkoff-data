@@ -4,13 +4,13 @@ import com.example.stocksservice.tinkoff_data.dataprovider.ITinkoffApi;
 import com.example.stocksservice.tinkoff_data.datastorage.service.CacheInstrumentServiceImpl;
 import com.example.stocksservice.tinkoff_data.model.CandleData;
 import com.example.stocksservice.tinkoff_data.model.MarketInstrument;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.DependsOn;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import ru.tinkoff.invest.openapi.model.rest.InstrumentType;
 import ru.tinkoff.piapi.contract.v1.MarketDataResponse;
+import ru.tinkoff.piapi.contract.v1.SubscriptionInterval;
 import ru.tinkoff.piapi.core.stream.StreamProcessor;
 
 import javax.annotation.PostConstruct;
@@ -21,14 +21,21 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 @DependsOn({"cacheInstrumentServiceImpl"})
 @ConditionalOnProperty(name = "tinkoff-investment.candle.listener.active", havingValue = "true")
 public class CandleStreamingServiceImpl implements CandleStreamingService {
 
+    private List<String> figis;
+
     private ITinkoffApi tinkoffApi;
     private CacheInstrumentServiceImpl cacheInstrumentService;
     private CandlePublisherService candlePublisherService;
+
+    public CandleStreamingServiceImpl(ITinkoffApi tinkoffApi, CacheInstrumentServiceImpl cacheInstrumentService, CandlePublisherService candlePublisherService) {
+        this.tinkoffApi = tinkoffApi;
+        this.cacheInstrumentService = cacheInstrumentService;
+        this.candlePublisherService = candlePublisherService;
+    }
 
     @PostConstruct
     public void init() {
@@ -39,16 +46,15 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
     @Override
     public void publishCandleData() {
         log.info("Starting publishing candle data.....");
-        List<String> figis = cacheInstrumentService.getAll().stream()
-                .filter(marketInstrument -> marketInstrument.getType().equals(InstrumentType.CURRENCY))
+        figis = cacheInstrumentService.getAll().stream()
+                .filter(marketInstrument -> marketInstrument.getCurrency().equals("rub"))
+                //.filter(marketInstrument -> marketInstrument.getType().equals(InstrumentType.STOCK))
                 .map(MarketInstrument::getFigi)
-                //.limit(2)
                 .collect(Collectors.toList());
-
         try {
             tinkoffApi.getApi().getMarketDataStreamService()
-                    .newStream("candles_stream", getStreamProcessor(), onErrorConsumer())
-                    .subscribeCandles(figis);
+                    .newStream("candles_stream2627654654", getStreamProcessor(), onErrorConsumer())
+                    .subscribeCandles(figis, SubscriptionInterval.SUBSCRIPTION_INTERVAL_ONE_MINUTE);
         } catch (Throwable throwable) {
             log.error("An error in subscriber, listener will be restarted", throwable);
             publishCandleData();
@@ -58,7 +64,8 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
 
     @PreDestroy
     public void unsubscribeStream() {
-
+        tinkoffApi.getApi().getMarketDataStreamService().getStreamById("candles_stream2627654654")
+                .unsubscribeCandles(figis);
     }
 
     private StreamProcessor<MarketDataResponse> getStreamProcessor() {
@@ -68,9 +75,14 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
             if (item.hasCandle()) {
                 CandleData cd = new CandleData(item);
                 candlePublisherService.refreshCandle(cd);
-                log.info("candle : {}", cd);
+                log.trace("candle : {}", cd);
             }
         };
+    }
+
+    @Scheduled(cron = "0 * * * * *")
+    public void getHistoricCandles() {
+
     }
 
     private Consumer<Throwable> onErrorConsumer() {
@@ -79,4 +91,6 @@ public class CandleStreamingServiceImpl implements CandleStreamingService {
             publishCandleData();
         };
     }
+
+
 }

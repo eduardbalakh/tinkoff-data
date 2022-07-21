@@ -4,30 +4,26 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 @Setter
 public class CandleSlice implements Serializable {
     private OffsetDateTime sliceTime;
     private String interval;
-    private List<CandleData> candles;
+    private Map<String, CandleData> candles;
 
-    public CandleSlice(OffsetDateTime sliceTime, String interval, List<CandleData> candles) {
-        this.sliceTime = sliceTime;
-        this.interval = interval;
-        this.candles = candles;
-    }
 
-    public CandleSlice(OffsetDateTime sliceTime, String interval) {
-        this.sliceTime = sliceTime;
+    public CandleSlice(String interval, CandleData newCandle) {
+        this.sliceTime = newCandle.getTime();
         this.interval = interval;
-        this.candles = new ArrayList<>();
+        this.candles = new HashMap<>();
+        this.addNewCandleToList(newCandle);
     }
 
     public boolean addNewCandleToList(CandleData newCandle) {
         if(newCandle.getInterval().equals(interval) && newCandle.getTime().equals(sliceTime)) {
-            candles.add(newCandle);
+            candles.put(newCandle.getFigi(), newCandle);
             return true;
         }
         return false;
@@ -41,7 +37,11 @@ public class CandleSlice implements Serializable {
         return interval;
     }
 
-    public List<CandleData> getCandles() {
-        return new ArrayList<>(candles);
+    public Map<String, CandleData> getCandles() {
+        return new HashMap<>(candles);
+    }
+
+    public int getCandlesSize() {
+        return candles.size();
     }
 }
